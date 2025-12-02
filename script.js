@@ -1,9 +1,9 @@
 async function runVilor() {
   const prompt = document.getElementById("prompt").value;
   const mode = document.getElementById("mode").value;
-  const resp = document.getElementById("response");
+  const r = document.getElementById("response");
 
-  resp.innerHTML = "Processando...";
+  r.innerHTML = "Processando...";
 
   const input =
     mode === "chat"
@@ -19,19 +19,19 @@ async function runVilor() {
   const data = await req.json();
 
   if (data.error) {
-    resp.innerHTML = "Erro: " + data.error;
+    r.innerHTML = "Erro: " + data.error;
     return;
   }
 
   if (mode === "chat" || mode === "caption") {
-    resp.innerHTML = data.output;
+    r.innerHTML = data.output;
   }
 
   if (mode === "image") {
-    resp.innerHTML = `<img src="${data.output}" width="400">`;
+    r.innerHTML = `<img src="${data.output}" width="400">`;
   }
 
   if (mode === "video") {
-    resp.innerHTML = `<video src="${data.output}" controls width="400"></video>`;
+    r.innerHTML = `<video src="${data.output}" controls width="400"></video>`;
   }
 }
