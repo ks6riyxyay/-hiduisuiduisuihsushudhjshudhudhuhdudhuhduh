@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Vilor AI</title>
+<style>
+  body {
+    font-family: Arial;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    background: #4b4bff;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  textarea, input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    font-size: 16px;
+  }
+  button {
+    margin-top: 15px;
+    padding: 15px;
+    font-size: 16px;
+    width: 100%;
+    background: #4b4bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover { background: #3333ff; }
+  .output {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Vilor AI</h1>
+
+<select id="mode">
+  <option value="chat">Assistente Inteligente</option>
+  <option value="image">Gerar Imagem</option>
+  <option value="video">Gerar Vídeo</option>
+  <option value="caption">Legenda de Imagem</option>
+</select>
+
+<textarea id="prompt" placeholder="Digite aqui... (ou cole o link da imagem para gerar legenda)"></textarea>
+
+<button onclick="runVilor()">Executar</button>
+
+<div class="output" id="response"></div>
+
+<script type="module">
+  import Bytez from "https://cdn.jsdelivr.net/npm/bytez.js/+esm";
+
+  const key = "82aeed12438e4526e91f4e00a70a5eba";
+  const sdk = new Bytez(key);
+
+  async function runVilor() {
+    const mode = document.getElementById("mode").value;
+    const prompt = document.getElementById("prompt").value;
+    const respBox = document.getElementById("response");
+
+    respBox.innerHTML = "<b>Processando...</b>";
+
+    let model;
+
+    // Os modelos NÃO são exibidos ao usuário
+    if (mode === "chat") model = sdk.model("Qwen/Qwen3-0.6B");
+    if (mode === "image") model = sdk.model("SG161222/RealVisXL_V5.0");
+    if (mode === "video") model = sdk.model("ali-vilab/text-to-video-ms-1.7b");
+    if (mode === "caption") model = sdk.model("nlpconnect/vit-gpt2-image-captioning");
+
+    try {
+      const { error, output } = await model.run(
+        mode === "chat" ? [{ role: "user", content: prompt }] : prompt
+      );
+
+      if (error) {
+        respBox.innerHTML = "<b>Erro:</b> " + error;
+        return;
+      }
+
+      // Saídas personalizadas conforme a função
+      if (mode === "chat") {
+        respBox.innerHTML = `<b>Vilor AI:</b><br>${output}`;
+      }
+
+      if (mode === "image") {
+        respBox.innerHTML = `<b>Imagem gerada:</b><br><img src="${output}" width="450">`;
+      }
+
+      if (mode === "video") {
+        respBox.innerHTML = `<b>Vídeo gerado:</b><br><video src="${output}" width="450" controls></video>`;
+      }
+
+      if (mode === "caption") {
+        respBox.innerHTML = `<b>Descrição da imagem:</b><br>${output}`;
+      }
+
+    } catch (err) {
+      respBox.innerHTML = "<b>Erro interno:</b> " + err.message;
+    }
+  }
+</script>
+
+</body>
+</html>
