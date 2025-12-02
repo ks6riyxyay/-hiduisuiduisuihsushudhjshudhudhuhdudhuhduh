@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <title>Vilor AI</title>
 <style>
-  body { font-family: Arial; background: #f0f0f0; padding: 20px; }
-  h1 { background: #4a4aff; color: white; padding: 15px; border-radius: 6px; text-align: center; }
-  select, textarea { width: 100%; padding: 12px; margin-top: 10px; }
-  button { width: 100%; margin-top: 15px; padding: 15px; background: #4a4aff; color: white; border: none; cursor: pointer; }
-  .output { margin-top: 20px; background: white; padding: 15px; border-radius: 6px; }
+  body { font-family: Arial; background: #eee; padding: 20px; }
+  h1 { text-align: center; background: #4a4aff; color: white; padding: 15px; border-radius: 6px; }
+  textarea, select { width: 100%; padding: 12px; margin-top: 10px; }
+  button { width: 100%; padding: 14px; margin-top: 15px; background: #4a4aff; color: white; border: none; cursor: pointer; }
+  .output { margin-top: 20px; background: white; padding: 20px; border-radius: 6px; }
 </style>
 </head>
 <body>
@@ -16,13 +16,13 @@
 <h1>Vilor AI</h1>
 
 <select id="mode">
-  <option value="chat">Chat (Texto)</option>
+  <option value="chat">Chat</option>
   <option value="image">Gerar Imagem</option>
   <option value="video">Gerar Vídeo</option>
   <option value="caption">Legenda de Imagem</option>
 </select>
 
-<textarea id="prompt" rows="6" placeholder="Digite ou cole URL..."></textarea>
+<textarea id="prompt" rows="6" placeholder="Digite o prompt..."></textarea>
 
 <button onclick="runVilor()">Executar</button>
 
